@@ -54,10 +54,24 @@ class HomeFragment : Fragment() {
                     }
                 }
 */
+                launch {
+                    mainViewModel.textAsStateFlow.collect {
+                        // do something with values
+                        binding.textHome.text = it
+                    }
+                }
+                launch {
+                    mainViewModel.updateTextAsSharedFlow.collect{
+                        // do something with values
+                        binding.sharedFlowTextHome.text = it
+                    }
+                }
+/*
                 mainViewModel.updateTextAsSharedFlow.collectLatest {
                     // do something with values
                     binding.sharedFlowTextHome.text = it
                 }
+*/
                 val a = ""
                 // However, here if we start collecting flow then it will never going to be collected
                 // Therefore, to overcome this we should use launch { }
@@ -71,29 +85,6 @@ class HomeFragment : Fragment() {
             }
         }
 
-        // For Fragment use viewLifecycleOwner.lifecycleScope
-        viewLifecycleOwner.lifecycleScope.launch {
-            // For Fragment use viewLifecycleOwner.repeatOnLifecycle
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                mainViewModel.textAsStateFlow.collect {
-                    // do something with values
-                    binding.textHome.text = it
-                }
-
-
-                // However, here if we start collecting flow then it will never going to be collected
-                // Therefore, to overcome this we should use launch { }
-/*
-                                launch {
-                                    viewModel.userDetails.collect {
-                                        // do something with user details
-                                    }
-                                }
-*/
-
-
-            }
-        }
         binding.updateFromStateFlowButton.setOnClickListener {
 //            homeViewModel.updateTextFromStateFlow()
             mainViewModel.updateTextFromStateFlow()
